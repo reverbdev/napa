@@ -16,15 +16,15 @@ unless defined?(Rails)
     desc "Create the database"
     task :create => :environment do
       db = YAML.load(ERB.new(File.read('./config/database.yml')).result)[Napa.env]
-      ActiveRecord::Base.establish_connection(adapter)
-      ActiveRecord::Base.connection.create_database(db.fetch('database'))
+      ActiveRecord::Base.establish_connection(adapter: db["adapter"], database: 'postgres')
+      ActiveRecord::Base.connection.create_database(db["database"])
     end
 
     desc "Delete the database"
     task :drop => :environment do
       db = YAML.load(ERB.new(File.read('./config/database.yml')).result)[Napa.env]
-      ActiveRecord::Base.establish_connection(adapter)
-      ActiveRecord::Base.connection.drop_database(db.fetch('database'))
+      ActiveRecord::Base.establish_connection(adapter: db["adapter"], database: 'postgres')
+      ActiveRecord::Base.connection.drop_database(db["database"])
     end
 
     desc "Create the test database"
